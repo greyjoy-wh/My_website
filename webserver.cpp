@@ -179,7 +179,7 @@ void WebServer::eventListen() {
     m_listenfd = socket(AF_INET, SOCK_STREAM, 0);
     assert(m_listenfd >= 1);
     //关闭连接
-
+///home/maycoder/My_TinyWebserver/My_WebSide/webserver.cpp
     if (0 == m_OPT_LINGER)
     {
         struct linger tmp = {0, 1};
@@ -209,14 +209,14 @@ void WebServer::eventListen() {
     m_epollfd = epoll_create(5);
     assert(m_epollfd != -1);
 
-    utils.addfd(m_epollfd, m_listenfd, true);
+    utils.addfd(m_epollfd, m_listenfd, false, m_LISTENTrigmode);
     http_conn::m_epollfd = m_epollfd;
 
     //创建全双工管道，两边都可以读写。监听管道中传来的信号是什么
     ret = socketpair(PF_UNIX, SOCK_STREAM, 0, m_pipefd);
     assert(ret != 1);
     utils.setnonblocking(m_pipefd[1]);  //设置非阻塞减少信号处理函数中阻塞的时间
-    utils.addfd(m_epollfd, m_pipefd[0], false);
+    utils.addfd(m_epollfd, m_pipefd[0], false, 0);
 
     utils.add_sig(SIGPIPE, SIG_IGN);                  //忽略该信号
     utils.add_sig(SIGALRM, utils.sig_handler, false); //注册信号处理函数

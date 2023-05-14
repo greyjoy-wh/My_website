@@ -69,7 +69,7 @@ public:
     ~Utils(){};
     void init(int timeslot);    //初始化工具类
     int setnonblocking(int fd);    //设置非阻塞
-    void addfd(int epollfd ,int fd, bool one_shot); //注册内核事件
+    void addfd(int epollfd, int fd, bool one_shot, int TRIGMode); //注册内核事件
     static void sig_handler(int sig);                      //信号处理函数 一定要是静态的
     void add_sig(int sig, void (*handler)(int), bool restart = true);    //注册信号处理函数
     void timer_handler();   //信号处理函数会调用该函数？
